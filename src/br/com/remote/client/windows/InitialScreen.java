@@ -1,4 +1,4 @@
-package br.com.remote.windows;
+package br.com.remote.client.windows;
 
 import javax.swing.*;
 import java.awt.*;

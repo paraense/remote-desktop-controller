@@ -23,7 +23,7 @@ public class Viewer {
            var renderingScreen = new RenderingScreen(connection, host, widthScreenClient, heightScreenClient);
            new Thread(renderingScreen).start();
 
-           Thread.sleep(3000);
+           Thread.sleep(1000);
            var mouseCapture = new MouseCapture(connection, RenderingScreen.getScreen());
            mouseCapture.run();
 

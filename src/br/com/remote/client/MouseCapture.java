@@ -1,8 +1,7 @@
 package br.com.remote.client;
 
-import br.com.remote.windows.RemoteScreen;
+import br.com.remote.client.windows.RemoteScreen;
 
-import java.awt.*;
 import java.io.IOException;
 import java.net.Socket;
 
