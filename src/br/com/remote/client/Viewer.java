@@ -36,7 +36,9 @@ public class Viewer {
             var inputStreamReader = new InputStreamReader(inputStream);
             var reader = new BufferedReader(inputStreamReader);
 
-            String[] size = reader.readLine().split(":");
+            var line = reader.readLine();
+
+            String[] size = line.split(":");
             widthScreenClient = Integer.parseInt(size[0]);
             heightScreenClient = Integer.parseInt(size[1]);
 

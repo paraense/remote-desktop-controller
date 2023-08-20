@@ -53,7 +53,7 @@ public class Agent {
     }
 
     private static String getScreenSize(Dimension dimension) {
-        return String.format("%s : %s", dimension.getWidth(), dimension.getHeight());
+        return String.format("%s:%s\n", dimension.width, dimension.height);
     }
 
     private static void sendSizeScreen(OutputStream outputStream, Dimension dimension) throws IOException {
