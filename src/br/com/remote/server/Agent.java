@@ -18,8 +18,7 @@ public class Agent {
             final ServerSocket socket = new ServerSocket(PORT);
             var client = socket.accept();
             System.out.println("Conexão estabelecida com " + client.getInetAddress());
-
-
+            
             while (true) {
                 var outPut = client.getOutputStream();
                 var image = capture(1980, 1080);
