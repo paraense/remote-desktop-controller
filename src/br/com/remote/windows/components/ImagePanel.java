@@ -2,6 +2,7 @@ package br.com.remote.windows.components;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 public class ImagePanel extends JPanel {
@@ -17,6 +18,5 @@ public class ImagePanel extends JPanel {
         super.paintComponent(graphics);
         graphics.drawImage(image, 0, 0, this);
     }
-
 
 }

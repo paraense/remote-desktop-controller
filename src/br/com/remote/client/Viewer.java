@@ -10,6 +10,7 @@ public class Viewer {
     private static int widthScreenClient;
     private static int heightScreenClient;
 
+
     public static void main(String[] args) throws IOException {
         var host = JOptionPane
                 .showInputDialog("Digite o Endereço IP do computador que deseja acessar")
@@ -20,14 +21,17 @@ public class Viewer {
            setScreenSize(connection.getInputStream());
 
            var renderingScreen = new RenderingScreen(connection, host, widthScreenClient, heightScreenClient);
-           var mouseCapture = new MouseCapture(connection);
+           new Thread(renderingScreen).start();
 
-           new Thread(mouseCapture).start();
-           renderingScreen.run();
+           Thread.sleep(3000);
+           var mouseCapture = new MouseCapture(connection, RenderingScreen.getScreen());
+           mouseCapture.run();
 
         }catch (ConnectException e) {
             JOptionPane.showMessageDialog(null, "Não foi possível encontrar o computador na rede. " +
                                                                        "\n Verifique se o ip informado está correto e tente novamente");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 
