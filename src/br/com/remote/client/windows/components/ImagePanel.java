@@ -1,8 +1,7 @@
-package br.com.remote.windows.components;
+package br.com.remote.client.windows.components;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 import java.awt.image.BufferedImage;
 
 public class ImagePanel extends JPanel {

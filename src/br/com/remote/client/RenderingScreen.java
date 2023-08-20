@@ -1,7 +1,7 @@
 package br.com.remote.client;
 
-import br.com.remote.windows.RemoteScreen;
-import br.com.remote.windows.components.ImagePanel;
+import br.com.remote.client.windows.RemoteScreen;
+import br.com.remote.client.windows.components.ImagePanel;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

@@ -44,8 +44,8 @@ public class Agent {
            ipAddress = ipAddress.substring(ipAddress.indexOf("/") + 1);
 
            JOptionPane.showMessageDialog(null,
-                   "Bem vindo ao RNC. Você está pronto para receber uma conexão " +
-                           "\n Seu endereço IP para conexão é : "+ ipAddress);
+                   "Bem vindo ao Remote LAN Desktop Controle (RLDC). Você está pronto para receber uma conexão " +
+                           "\n Seu endereço IP para conexão é : "+ ipAddress + "\n Clique em OK para continuar");
 
        } catch (UnknownHostException e) {
            System.err.println("Ocorreram erros ao tenta recuperar o endereço IP do Host");

@@ -1,6 +1,6 @@
-package br.com.remote.windows;
+package br.com.remote.client.windows;
 
-import br.com.remote.windows.components.ImagePanel;
+import br.com.remote.client.windows.components.ImagePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,7 +51,6 @@ public class RemoteScreen extends JFrame {
                 MOUSE_Y = e.getY();
             }
         });
-
 
         return imagePanel;
     }
