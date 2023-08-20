@@ -3,7 +3,9 @@ package br.com.remote.server;
 
 import javax.swing.*;
 
+import java.awt.*;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.UnknownHostException;
@@ -18,12 +20,16 @@ public class Agent {
 
         try(final ServerSocket serverSocket = new ServerSocket(PORT)) {
             var socket = serverSocket.accept();
+
             System.out.println("Conexão recebida: " + socket.getInetAddress());
 
-            var captureScreen = new CaptureScreen(socket, 1366, 780);
+            var dimension = Toolkit.getDefaultToolkit().getScreenSize();
+            sendSizeScreen(socket.getOutputStream(), dimension);
+
+            var captureScreen = new CaptureScreen(socket, dimension.width, dimension.height);
             var mouseActions = new MouseActions(socket.getInputStream());
 
-            captureScreen.run();
+            new Thread(captureScreen).start();
             mouseActions.run();
 
         }catch (IOException e) {
@@ -44,6 +50,14 @@ public class Agent {
        } catch (UnknownHostException e) {
            System.err.println("Ocorreram erros ao tenta recuperar o endereço IP do Host");
        }
+    }
+
+    private static String getScreenSize(Dimension dimension) {
+        return String.format("%s : %s", dimension.getWidth(), dimension.getHeight());
+    }
+
+    private static void sendSizeScreen(OutputStream outputStream, Dimension dimension) throws IOException {
+        outputStream.write(getScreenSize(dimension).getBytes());
     }
 
 }
