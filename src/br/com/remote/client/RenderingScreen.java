@@ -12,17 +12,21 @@ import java.net.Socket;
 public class RenderingScreen  implements Runnable {
     private static boolean IS_FIRST_IMG = true;
     private static RemoteScreen screen = null;
-    private final Socket socket;
+    private Socket socket;
     private final String hostName;
+    private final int width;
+    private final int height;
 
-    public RenderingScreen(Socket socket, String hostName) {
+    public RenderingScreen(Socket socket, String hostName, int width, int height) {
         this.socket = socket;
         this.hostName = hostName;
+        this.width = width;
+        this.height = height;
     }
 
     private  void renderImage(BufferedImage image) {
         if (IS_FIRST_IMG) {
-            screen = new RemoteScreen(1366, 780, new ImagePanel(image), hostName);
+            screen = new RemoteScreen(width, height, new ImagePanel(image), hostName);
             IS_FIRST_IMG = false;
         } else {
             screen.changeImage(new ImagePanel(image));
