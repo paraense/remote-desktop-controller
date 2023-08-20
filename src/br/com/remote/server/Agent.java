@@ -1,12 +1,12 @@
 package br.com.remote.server;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
+
+import javax.swing.*;
+
 import java.io.IOException;
-import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.UnknownHostException;
 
 public class Agent {
 
@@ -14,34 +14,36 @@ public class Agent {
 
     public static void main(String[] args) {
 
-        try {
-            final ServerSocket socket = new ServerSocket(PORT);
-            var client = socket.accept();
-            System.out.println("Conexão estabelecida com " + client.getInetAddress());
-            
-            while (true) {
-                var outPut = client.getOutputStream();
-                var image = capture(1980, 1080);
-                sendImage(outPut, image);
-            }
+        welcomeMessage();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        try(final ServerSocket serverSocket = new ServerSocket(PORT)) {
+            var socket = serverSocket.accept();
+            System.out.println("Conexão recebida: " + socket.getInetAddress());
+
+            var captureScreen = new CaptureScreen(socket, 1366, 780);
+            var mouseActions = new MouseActions(socket.getInputStream());
+
+            captureScreen.run();
+            mouseActions.run();
+
+        }catch (IOException e) {
+            System.err.println("Erro ao estabelecer conexão");
         }
     }
 
-    private static void sendImage(OutputStream outputStream, BufferedImage image) throws IOException {
-        outputStream.write(imageToByteArray(image));
-        System.out.println("Enviando Imagem..");
+
+    private static void welcomeMessage() {
+       try{
+           var ipAddress = String.valueOf(InetAddress.getLocalHost());
+           ipAddress = ipAddress.substring(ipAddress.indexOf("/") + 1);
+
+           JOptionPane.showMessageDialog(null,
+                   "Bem vindo ao RNC. Você está pronto para receber uma conexão " +
+                           "\n Seu endereço IP para conexão é : "+ ipAddress);
+
+       } catch (UnknownHostException e) {
+           System.err.println("Ocorreram erros ao tenta recuperar o endereço IP do Host");
+       }
     }
 
-    private static byte[] imageToByteArray(BufferedImage image) throws IOException {
-        var byteArrayOut = new ByteArrayOutputStream();
-        ImageIO.write(image, "jpeg", byteArrayOut);
-        return byteArrayOut.toByteArray();
-    }
-
-    private static BufferedImage capture(int width, int height) throws AWTException {
-        return new Robot().createScreenCapture(new Rectangle(width, height));
-    }
 }
