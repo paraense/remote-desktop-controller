@@ -37,6 +37,12 @@ public class RenderingScreen  implements Runnable {
         var inputStream = new ByteArrayInputStream(bytes);
         return ImageIO.read(inputStream);
     }
+
+
+    public static RemoteScreen getScreen() {
+        return screen;
+    }
+
     @Override
     public void run() {
 
