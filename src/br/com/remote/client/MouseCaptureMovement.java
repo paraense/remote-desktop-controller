@@ -37,7 +37,6 @@ public class MouseCaptureMovement implements Runnable {
        } catch (InterruptedException e) {
            throw new RuntimeException(e);
        }
-
     }
 
     private byte[] currentMousePositionToBytes() {

@@ -27,13 +27,13 @@ public class Viewer {
            // Captura a posição do mouse
            Thread.sleep(1000);
            var mouseCapture = new MouseCaptureMovement(connection, RenderingScreen.getScreen());
-           mouseCapture.run();
+           new Thread(mouseCapture).start();
 
-           // Clicks do Mouse
-           var mouseClick = new MouseCaptureClick(connection, RenderingScreen.getScreen());
-           mouseClick.run();
-
-           // TODO: Capturar teclas pressionadas
+            // Clicks do Mouse
+            Thread.sleep(1000);
+            var mouseClick = new MouseCaptureClick(connection, RenderingScreen.getScreen());
+            mouseClick.run();
+            // TODO: Capturar teclas pressionadas
 
 
         }catch (ConnectException e) {
@@ -52,8 +52,8 @@ public class Viewer {
             var line = reader.readLine();
 
             String[] size = line.split(":");
-            widthScreenClient = Integer.parseInt(size[0]);
-            heightScreenClient = Integer.parseInt(size[1]);
+            widthScreenClient = Integer.parseInt(size[0]) + 5;
+            heightScreenClient = Integer.parseInt(size[1]) + 40;
 
         } catch (IOException e) {
             System.err.println("Erro ao obter o tamanho da tela do client");

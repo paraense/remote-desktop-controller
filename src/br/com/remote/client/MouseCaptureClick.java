@@ -26,11 +26,16 @@ public class MouseCaptureClick implements Runnable {
                     continue;
                 }
 
-                out.write(clickCapture());
-                out.flush();
-
+                if(RemoteScreen.LEFT_MOUSE_BUTTON_CLICKED || RemoteScreen.RIGHT_MOUSE_BUTTON_CLICKED) {
+                    out.write(clickCapture());
+                    out.flush();
+                    Thread.sleep(2);
+                }
             }
         } catch (IOException e) {
+            throw new RuntimeException(e);
+
+        } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
 
@@ -41,11 +46,11 @@ public class MouseCaptureClick implements Runnable {
         var mousePositions = CaptureType.MOUSE_CLICK + ":";
 
         if(RemoteScreen.LEFT_MOUSE_BUTTON_CLICKED) {
-            mousePositions = mousePositions.concat("LEFT \n");
+            mousePositions = mousePositions.concat("LEFT\n");
         }
 
         if(RemoteScreen.RIGHT_MOUSE_BUTTON_CLICKED) {
-            mousePositions = mousePositions.concat( "RIGHT \n");
+            mousePositions = mousePositions.concat( "RIGHT\n");
         }
 
         RemoteScreen.LEFT_MOUSE_BUTTON_CLICKED = Boolean.FALSE;

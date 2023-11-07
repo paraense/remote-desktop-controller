@@ -3,6 +3,7 @@ package br.com.remote.server;
 import br.com.remote.client.CaptureType;
 
 import java.awt.*;
+import java.awt.event.InputEvent;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +44,7 @@ public class MouseActions implements Runnable {
                   int y = Integer.parseInt(coordinates[1]);
 
                   robot.mouseMove(x, y);
+                  continue;
               }
 
               if(CaptureType.MOUSE_CLICK == captureType) {
@@ -50,11 +52,15 @@ public class MouseActions implements Runnable {
                   MouseButtons button = MouseButtons.valueOf(command);
 
                   if(MouseButtons.LEFT == button){
-                      robot.mousePress(1);
+                      robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                      Thread.sleep(2);
+                      robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
                   }
 
                   if(MouseButtons.RIGHT == button){
-                      robot.mousePress(3);
+                      robot.mousePress(InputEvent.BUTTON3_DOWN_MASK);
+                      Thread.sleep(2);
+                      robot.mouseRelease(InputEvent.BUTTON3_DOWN_MASK);
                   }
               }
           }
@@ -62,6 +68,8 @@ public class MouseActions implements Runnable {
           throw new RuntimeException(e);
 
       } catch (AWTException e) {
+          throw new RuntimeException(e);
+      } catch (InterruptedException e) {
           throw new RuntimeException(e);
       }
 

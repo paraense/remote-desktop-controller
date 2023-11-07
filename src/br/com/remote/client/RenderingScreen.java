@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.net.Socket;
 
 public class RenderingScreen  implements Runnable {
-    private static boolean IS_FIRST_IMG = true;
     private static RemoteScreen screen = null;
     private Socket socket;
     private final String hostName;
@@ -25,11 +24,10 @@ public class RenderingScreen  implements Runnable {
     }
 
     private  void renderImage(BufferedImage image) {
-        if (IS_FIRST_IMG) {
+        if (screen == null) {
             screen = new RemoteScreen(width, height, new ImagePanel(image), hostName);
-            IS_FIRST_IMG = false;
         } else {
-            screen.changeImage(new ImagePanel(image));
+            screen.changeImage(image);
         }
     }
 
