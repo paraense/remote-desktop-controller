@@ -20,12 +20,21 @@ public class Viewer {
 
            setScreenSize(connection.getInputStream());
 
+           // Streaming de tela
            var renderingScreen = new RenderingScreen(connection, host, widthScreenClient, heightScreenClient);
            new Thread(renderingScreen).start();
 
+           // Captura a posição do mouse
            Thread.sleep(1000);
-           var mouseCapture = new MouseCapture(connection, RenderingScreen.getScreen());
-           mouseCapture.run();
+           var mouseCapture = new MouseCaptureMovement(connection, RenderingScreen.getScreen());
+           new Thread(mouseCapture).start();
+
+            // Clicks do Mouse
+            Thread.sleep(1000);
+            var mouseClick = new MouseCaptureClick(connection, RenderingScreen.getScreen());
+            mouseClick.run();
+            // TODO: Capturar teclas pressionadas
+
 
         }catch (ConnectException e) {
             JOptionPane.showMessageDialog(null, "Não foi possível encontrar o computador na rede. " +
@@ -43,8 +52,8 @@ public class Viewer {
             var line = reader.readLine();
 
             String[] size = line.split(":");
-            widthScreenClient = Integer.parseInt(size[0]);
-            heightScreenClient = Integer.parseInt(size[1]);
+            widthScreenClient = Integer.parseInt(size[0]) + 5;
+            heightScreenClient = Integer.parseInt(size[1]) + 40;
 
         } catch (IOException e) {
             System.err.println("Erro ao obter o tamanho da tela do client");
