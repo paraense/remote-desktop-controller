@@ -20,12 +20,21 @@ public class Viewer {
 
            setScreenSize(connection.getInputStream());
 
+           // Streaming de tela
            var renderingScreen = new RenderingScreen(connection, host, widthScreenClient, heightScreenClient);
            new Thread(renderingScreen).start();
 
+           // Captura a posição do mouse
            Thread.sleep(1000);
-           var mouseCapture = new MouseCapture(connection, RenderingScreen.getScreen());
+           var mouseCapture = new MouseCaptureMovement(connection, RenderingScreen.getScreen());
            mouseCapture.run();
+
+           // Clicks do Mouse
+           var mouseClick = new MouseCaptureClick(connection, RenderingScreen.getScreen());
+           mouseClick.run();
+
+           // TODO: Capturar teclas pressionadas
+
 
         }catch (ConnectException e) {
             JOptionPane.showMessageDialog(null, "Não foi possível encontrar o computador na rede. " +

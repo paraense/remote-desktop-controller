@@ -5,12 +5,12 @@ import br.com.remote.client.windows.RemoteScreen;
 import java.io.IOException;
 import java.net.Socket;
 
-public class MouseCapture implements Runnable {
+public class MouseCaptureMovement implements Runnable {
 
     private final Socket socket;
     private final RemoteScreen remoteScreen;
 
-    public MouseCapture(Socket socket, RemoteScreen remoteScreen) {
+    public MouseCaptureMovement(Socket socket, RemoteScreen remoteScreen) {
         this.socket = socket;
         this.remoteScreen = remoteScreen;
     }
@@ -26,11 +26,7 @@ public class MouseCapture implements Runnable {
                    continue;
                }
 
-               int x = RemoteScreen.MOUSE_X;
-               int y = RemoteScreen.MOUSE_Y;
-
-               var mousePositions = x+";"+y+"\n";
-               out.write(mousePositions.getBytes());
+               out.write(currentMousePositionToBytes());
                out.flush();
 
                Thread.sleep(2);
@@ -42,5 +38,13 @@ public class MouseCapture implements Runnable {
            throw new RuntimeException(e);
        }
 
+    }
+
+    private byte[] currentMousePositionToBytes() {
+        var mousePositions = CaptureType.MOUSE_MOVEMENT+ ":"
+                             + RemoteScreen.MOUSE_MOVEMENT_X +";"
+                             + RemoteScreen.MOUSE_MOVEMENT_Y +"\n";
+
+        return mousePositions.getBytes();
     }
 }

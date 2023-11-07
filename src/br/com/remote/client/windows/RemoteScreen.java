@@ -11,8 +11,12 @@ import java.awt.event.MouseMotionAdapter;
 public class RemoteScreen extends JFrame {
 
     public static Boolean MOUSE_ONE_SCREEN;
-    public static int MOUSE_X;
-    public static int MOUSE_Y;
+    public static Boolean LEFT_MOUSE_BUTTON_CLICKED = Boolean.FALSE;
+    public static Boolean RIGHT_MOUSE_BUTTON_CLICKED = Boolean.FALSE;
+
+    public static int MOUSE_MOVEMENT_X;
+    public static int MOUSE_MOVEMENT_Y;
+
 
     public RemoteScreen(int width, int height, ImagePanel panel, String title) {
         super(title);
@@ -44,11 +48,20 @@ public class RemoteScreen extends JFrame {
             }
         });
 
+
+        imagePanel.addMouseListener(new MouseAdapter(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                LEFT_MOUSE_BUTTON_CLICKED = e.getButton() == MouseEvent.BUTTON1;
+                RIGHT_MOUSE_BUTTON_CLICKED = e.getButton() == MouseEvent.BUTTON3;
+            }
+        });
+
         imagePanel.addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseMoved(MouseEvent e) {
-                MOUSE_X = e.getX();
-                MOUSE_Y = e.getY();
+                MOUSE_MOVEMENT_X = e.getX();
+                MOUSE_MOVEMENT_X = e.getY();
             }
         });
 

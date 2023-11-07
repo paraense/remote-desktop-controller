@@ -1,5 +1,7 @@
 package br.com.remote.server;
 
+import br.com.remote.client.CaptureType;
+
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,6 +11,8 @@ import java.io.InputStreamReader;
 public class MouseActions implements Runnable {
 
     private final InputStream inputStream;
+
+    private static final String SEPARATOR = ";";
 
     public MouseActions(InputStream outputStream) {
         this.inputStream = outputStream;
@@ -24,17 +28,35 @@ public class MouseActions implements Runnable {
 
           while (true) {
 
-              var positions = reader.readLine();
+              var command = reader.readLine();
 
-              if(positions == null) {
+              if(command == null) {
                   continue;
               }
 
-              String[] coordinates = positions.split(";");
-              int x = Integer.parseInt(coordinates[0]);
-              int y = Integer.parseInt(coordinates[1]);
+              CaptureType captureType = getType(command);
 
-              robot.mouseMove(x, y);
+              if(CaptureType.MOUSE_MOVEMENT == captureType) {
+                  command = removePrefix(command);
+                  String[] coordinates = command.split(SEPARATOR);
+                  int x = Integer.parseInt(coordinates[0]);
+                  int y = Integer.parseInt(coordinates[1]);
+
+                  robot.mouseMove(x, y);
+              }
+
+              if(CaptureType.MOUSE_CLICK == captureType) {
+                  command = removePrefix(command);
+                  MouseButtons button = MouseButtons.valueOf(command);
+
+                  if(MouseButtons.LEFT == button){
+                      robot.mousePress(1);
+                  }
+
+                  if(MouseButtons.RIGHT == button){
+                      robot.mousePress(3);
+                  }
+              }
           }
       } catch (IOException e) {
           throw new RuntimeException(e);
@@ -43,5 +65,14 @@ public class MouseActions implements Runnable {
           throw new RuntimeException(e);
       }
 
+    }
+
+    private CaptureType getType(String command) {
+        String type = command.substring(0, command.indexOf(":"));
+        return CaptureType.valueOf(type);
+    }
+
+    private String removePrefix(String command) {
+        return command.substring(command.indexOf(":")+1);
     }
 }
